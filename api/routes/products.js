@@ -1,12 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+  destination: 'uploads/',
+  filename: function (req, file, cb) {
+    const date = new Date().toISOString().replace(/:/g, '-');
+    cb(null, `${date}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 const router = express.Router();
 const Product = require('../models/product');
 
 router.get('/', async (req, res, next) => {
   try {
-    const docs = await Product.find().select('name price _id').exec();
+    const docs = await Product.find().select('name price _id').lean().exec();
     const response = {
       count: docs.length,
       products: docs.map((doc) => ({
@@ -25,7 +35,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', upload.single('image'), async (req, res, next) => {
   try {
     const product = new Product({
       _id: new mongoose.Types.ObjectId(),
@@ -56,7 +66,10 @@ router.post('/', async (req, res, next) => {
 router.get('/:productId', async (req, res, next) => {
   const id = req.params.productId;
   try {
-    const doc = await Product.findById(id).select('name price _id').exec();
+    const doc = await Product.findById(id)
+      .select('name price _id')
+      .lean()
+      .exec();
     res.status(200).json({
       product: doc,
       request: {
