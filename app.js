@@ -10,6 +10,9 @@ const uri = `mongodb+srv://yoelkalovski:${process.env.MONGO_ATLAS_PASS}@cluster0
 mongoose.connect(uri);
 
 app.use(morgan('dev'));
+// it makes the uploads folder statically (publicly available)
+// to see a specific image in this folder get from this url - localhost:3000/uploads/name-of-file
+app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use((req, res, next) => {

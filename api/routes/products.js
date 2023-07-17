@@ -10,13 +10,32 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    // save the file
+    cb(null, true);
+  } else {
+    // reject the file
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+  fileFilter: fileFilter,
+});
 const router = express.Router();
 const Product = require('../models/product');
 
 router.get('/', async (req, res, next) => {
   try {
-    const docs = await Product.find().select('name price _id').lean().exec();
+    const docs = await Product.find()
+      .select('name price _id productImage')
+      .lean()
+      .exec();
     const response = {
       count: docs.length,
       products: docs.map((doc) => ({
@@ -41,6 +60,7 @@ router.post('/', upload.single('image'), async (req, res, next) => {
       _id: new mongoose.Types.ObjectId(),
       name: req.body.name,
       price: req.body.price,
+      productImage: req.file.path,
     });
     const result = await product.save();
     console.log(result);
@@ -67,7 +87,7 @@ router.get('/:productId', async (req, res, next) => {
   const id = req.params.productId;
   try {
     const doc = await Product.findById(id)
-      .select('name price _id')
+      .select('name price _id productImage')
       .lean()
       .exec();
     res.status(200).json({
