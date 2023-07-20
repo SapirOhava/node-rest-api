@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Order = require('../models/order');
 const Product = require('../models/product');
+const checkAuth = require('../middleware/check-auth');
 
 const router = express.Router();
 // body parser , parses only url encoded or json bodies
@@ -10,7 +11,7 @@ const router = express.Router();
 // to be able to read this kind of incoming request body
 // we need a separate package( multer ) instead of our package bodyParser
 
-router.get('/', async (req, res, next) => {
+router.get('/', checkAuth, async (req, res, next) => {
   try {
     const docs = await Order.find()
       .select('product quantity _id')
@@ -35,7 +36,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', checkAuth, async (req, res, next) => {
   try {
     const product = await Product.findById(req.body.productId).exec();
 
@@ -69,7 +70,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.get('/:orderId', async (req, res, next) => {
+router.get('/:orderId', checkAuth, async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.orderId)
       .populate('product')
@@ -93,7 +94,7 @@ router.get('/:orderId', async (req, res, next) => {
   }
 });
 
-router.delete('/:orderId', async (req, res, next) => {
+router.delete('/:orderId', checkAuth, async (req, res, next) => {
   try {
     const id = req.params.orderId;
     console.log('id : ', id);
