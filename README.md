@@ -39,21 +39,21 @@ npm install -g nodemon
 
 ## Usage
 
-get - http://localhost:3000/user - get all users
-get - http://localhost:3000/user/:userId - get a user
-post - http://localhost:3000/user/signup - user signup (create a user)
-delete - http://localhost:3000/user/:userId - delete a user
+get - http://localhost:3000/user - get all users  
+get - http://localhost:3000/user/:userId - get a user  
+post - http://localhost:3000/user/signup - user signup (create a user)  
+delete - http://localhost:3000/user/:userId - delete a user  
 post - http://localhost:3000/user/login - user login
 
-get - http://localhost:3000/product - get all products
-post - http://localhost:3000/product - create a product
-get - http://localhost:3000/product/:productId - get a product
-delete http://localhost:3000/product/:productId - delete a product
+get - http://localhost:3000/product - get all products  
+post - http://localhost:3000/product - create a product  
+get - http://localhost:3000/product/:productId - get a product  
+delete http://localhost:3000/product/:productId - delete a product  
 patch http://localhost:3000/product/:productId - update a product
 
-get http://localhost:3000/order - get all orders
-post http://localhost:3000/order - create an order
-get http://localhost:3000/order/:orderId - get an order
+get http://localhost:3000/order - get all orders  
+post http://localhost:3000/order - create an order  
+get http://localhost:3000/order/:orderId - get an order  
 delete http://localhost:3000/order/:orderId - delete an order
 
 ## License
