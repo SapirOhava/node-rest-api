@@ -82,7 +82,7 @@ router.post('/login', async (req, res, next) => {
     }
     // as mentioned in the last video we cant reverse this hash,
     // so how can me match the hashed password with the plaintext password ?( because if we hash it again - in the same way - it wont give us the same hash !)
-    // bcrypt use some algorithm for hashing the password( you can ream more about it) but basically it returns true if
+    // bcrypt use some algorithm for hashing the password( you can read more about it) but basically it returns true if
     // it finds out that both passwords were created with the same algorithm and key so they are the same passwords, even though! their hashes aren't the same.
     const match = await bcrypt.compare(req.body.password, user.password);
     if (match) {
